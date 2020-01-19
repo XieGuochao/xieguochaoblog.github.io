@@ -16,4 +16,4 @@ GXBlog is the personal and academic blog of Guochao Xie 谢国超. I set up this
 2. Encourage myself to take notes.
 3. Record my study outcomes.
 
-For detail of my personal information, you may access [https://www.xieguochao.com](https://www.xieguochao.com) .
+For detail of my personal information, you may access [https://xieguochao.com](https://xieguochao.com) .
