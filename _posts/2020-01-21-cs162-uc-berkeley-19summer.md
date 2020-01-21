@@ -1,7 +1,7 @@
 ---
 date: 2020-01-21 10:01:11
 layout: post
-title: "CS162 UC Berkeley 17Summer"
+title: "CS162 UC Berkeley 19Summer"
 subtitle: 
 description: Course information about CS162 UC Berkeley in Summer 2017.
 image: /assets/img/contents/IMG_20200121_180330.jpg
