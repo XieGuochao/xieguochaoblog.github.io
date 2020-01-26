@@ -4,7 +4,7 @@ layout: post
 title: "CAP Theorem"
 subtitle:
 description: The relative knowledge about CAP Theorem
-image:
+image: /assets/img/contents/big_fc8a845754a3da53890168f967141708643d0296.jpg
 optimized_image:
 category: notes
 tags:
