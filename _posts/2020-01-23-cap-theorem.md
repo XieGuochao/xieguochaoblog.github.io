@@ -21,7 +21,7 @@ paginate: false
 
 ![](https://robertgreiner.com/content/images/2019/09/CAP-overview-2.png)
 
-Demonstration of CAP Theorem, source https://robertgreiner.com/content/images/2019/09/CAP-overview-2.png
+(Demonstration of CAP Theorem, source https://robertgreiner.com/content/images/2019/09/CAP-overview-2.png)
 
 **Consistency** means that any part of the overall system should provide **precisely** the correct data whenever it is requested.
 
@@ -75,7 +75,7 @@ Then, we write v1 to G1; however, G2 has no way to notice it. If we now read fro
 
 ![](/assets/img/contents/cap26.svg)
 
-(The source of the illustration: [https://mwhittaker.github.io/blog/an_illustrated_proof_of_the_cap_theorem/]https://mwhittaker.github.io/blog/an_illustrated_proof_of_the_cap_theorem/)
+(The source of the illustration: [https://mwhittaker.github.io/blog/an_illustrated_proof_of_the_cap_theorem/](https://mwhittaker.github.io/blog/an_illustrated_proof_of_the_cap_theorem/))
 
 # Thoughts
 
