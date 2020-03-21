@@ -1,0 +1,291 @@
+---
+date: 2020-03-21 04:29:45
+layout: post
+title: "Database Normalization"
+subtitle:
+description: "Review of different database normalization methods, including 1NF, 2NF, 3NF, BCNF, 4NF, 5NF, 6NF"
+image: /assets/img/contents/3d_landscape__26_.jpg
+optimized_image:
+category: course
+tags:
+  - CSC3170
+  - course note
+  - database
+  - normalization
+author: Guochao Xie
+paginate: false
+math: true
+---
+
+In this article, we are going to review the database normalization methods and compare different methods. The corresponding chapters in the textbook is from Chapter 5 to Chapter   .
+
+Content of Table:
+
+- [Purpose of Normalization](#purpose-of-normalization)
+- [Lossless Decomposition](#lossless-decomposition)
+- [Functional Dependencies](#functional-dependencies)
+  - [Closure of a Set of Functional Dependencies](#closure-of-a-set-of-functional-dependencies)
+  - [Trivial Functional Dependency](#trivial-functional-dependency)
+  - [Transitive Functional Dependency](#transitive-functional-dependency)
+  - [Full Functional Dependency](#full-functional-dependency)
+  - [Test of Lossless Decomposition](#test-of-lossless-decomposition)
+  - [Dependency Preservation](#dependency-preservation)
+- [Keys](#keys)
+  - [Candidate Key](#candidate-key)
+  - [Primary Key](#primary-key)
+  - [Secondary Key](#secondary-key)
+  - [Prime Attribute](#prime-attribute)
+  - [Non-prime Attribute](#non-prime-attribute)
+- [1NF](#1nf)
+- [2NF](#2nf)
+- [3NF](#3nf)
+- [BCNF](#bcnf)
+  - [BCNF and Dependency Preservation](#bcnf-and-dependency-preservation)
+- [Conclusion](#conclusion)
+- [References:](#references)
+
+## Purpose of Normalization
+
+Database normalization aims to reduce redundancy and dependency of data. 
+
+One of the goal for database design is **Atomic**. It means that elements are *indivisible* units.
+
+## Lossless Decomposition
+
+To perform normalization, we will use _lossless_ decompositions. To decompose a relation schema  \\(R\\) into \\(R_1\\) and \\(R_2\\) means that \\(R = R_1 \cap R_2\\). A _lossless_ decomposition should satisfy \\(\Pi_{R_1}(r) \bowtie \Pi_{R_2}(r) = r\\).
+
+## Functional Dependencies
+
+Represented by \\(\alpha \rightarrow \beta\\), where \\(\alpha \subseteq R, \beta \subseteq R\\).
+
+$$(\alpha \rightarrow \beta) \Leftrightarrow (t_1[\alpha] = t_2[\beta] \Rightarrow t_1[\beta] = t_2[\beta]\ \forall t_1, t_2)$$
+
+### Closure of a Set of Functional Dependencies
+
+For a set \\(F\\) of functional dependencies, \\(A \rightarrow B\\) and \\(B \rightarrow C\\) \\(\Rightarrow A \rightarrow C\\). The set of **all** functional dependencies logically implied by \\(F\\) is the **closure** of \\(F\\), denoted by \\(F^+\\).
+
+### Trivial Functional Dependency
+
+$$\beta \subset \alpha \Rightarrow \alpha \rightarrow \beta$$
+
+### Transitive Functional Dependency
+
+\\(X \rightarrow Z\\) can be derived from 2 FDs \\(X \rightarrow Y\\) and \\(Y \rightarrow Z\\), where \\(Y\\) is a nonprime attribute.
+
+For example, _Ssn \\(\rightarrow\\) Dmgr_ssn_ can be derived by _Ssn \\(\rightarrow\\) Dnumber_ and _Dnumber \\(\rightarrow\\) Dmgr_ssn_.
+
+### Full Functional Dependency
+
+A FD \\(Y \rightarrow Z\\) where removal of **any** attribute from \\(Y \Rightarrow Y \nrightarrow Z\\). 
+
+### Test of Lossless Decomposition
+
+\\(\Pi_{R_1}(r) \bowtie \Pi_{R_2}(r) = r\\) is _lossless_ if **one** of the following holds (**sufficient**):
+
+- \\(R_1 \cap R_2 \rightarrow R_1\\)
+- \\(R_1 \cap R_2 \rightarrow R_2\\)
+
+### Dependency Preservation
+
+Preserving the dependency in a schema instead of decompositing it, so that the check of dependency constraints can be done without a Cartisian Product.
+
+For example,
+
+_dept\_advisor(s\_ID, i\_ID, department\_name)_ where
+
+- _i\_ID → dept\_name_
+- _s\_ID, dept\_name → i\_ID_
+
+Since [1NF](#1nf), [2NF](#2nf) and [3NF](#3nf) consider only non-prime attributes, the above schema does not violate them. However, _i\_ID → dept\_name_ introduces a repetition for storing the _dept\_name_. If we decompose it into two schemas, we will not include _s\_ID, i\_ID, department\_name_ in the same s chema anymore, which is not __dependency preserving__.
+
+
+## Keys
+
+### Candidate Key
+
+\\(K\\) is a candidate key for if and only if it is the minimal subset of attributes to determine \\(R\\), that is \\(\Leftrightarrow\\)
+
+- \\(K \rightarrow R\\)
+- no \\(\alpha \subset K, \alpha \rightarrow R\\)
+
+### Primary Key
+
+One of the **Candidate Key** of \\(R\\) is chosen as the primary key.
+
+### Secondary Key
+
+All the other **candidate keys** except the **primary key** are secondary keys. It is usually used for _search_ and _index_ purposes.
+
+### Prime Attribute
+
+A member of some **candidate keys**.
+
+### Non-prime Attribute
+
+Not a member of any **candidate keys**.
+
+
+## 1NF
+
+The first normal form for a schema requires the domains of all attributes are **atomic**. An example is that, to store ones _telephones_, we should introduce a new table _people\_telephone_ to store the pair _(ID, telephone)_ as one record instead of storing a list of telephones in an element.
+
+Schema _people_:
+
+ID | Name | Telephones
+---------|----------|---------
+ 1 | David | 123
+ 2 | Jasmine | 234, 345
+ 3 | Jack | NULL
+
+We should modify it into:
+
+Schema _people_:
+
+ID | Name 
+---------|----------
+ 1 | David 
+ 2 | Jasmine 
+ 3 | Jack 
+
+and Schema _people\_telephone_:
+
+ID | Telephone 
+---------|----------
+ 1 | 123 
+ 2 | 234
+ 2 | 345
+
+## 2NF
+
+- [1NF](#1nf)
+- Every [nonprime attribtues](#non-prime-attribute) \\(A\\) in \\(R\\) is [fully functionally dependent](#full-functional-dependency) on the [primary key](#primary-key).
+- (General) Every [nonprime attribtues](#non-prime-attribute) \\(A\\) in \\(R\\) is [fully functionally dependent](#full-functional-dependency) on every [candidate key](#candidate-key).
+
+Example:
+
+_EMP\_PROJ(Emp#, Proj#, Ename, Pname, No\_hours)_
+
+_(Emp#, Proj#)_ is the candidate key, but _Proj#_ \\(\rightarrow\\) _Pname_ and _No\_hours_. 
+
+$$\Rightarrow$$
+
+- _EMP(Emp#, Ename)_
+- _PROJ(Proj#, Pname)_
+- _EP(Emp#, Proj#, No\_hours)_
+
+## 3NF
+
+- [2NF](#2nf)
+- No [nonprime attribute](#non-prime-attribute) _A_ in _R_ is [transitively dependent](#transitive-functional-dependency) on the [primary key](#primary-key).
+- (Generally) When a nontrival functional dependency \\(X \rightarrow A\\) holds in _R_, then either
+  - _X_ is a super key of _R_
+  - or _A - X_ is a prime attribute of _R_
+- (Alternative) Every nonprime attribute in _R_ meets both conditions:
+  - Fully conditional functionally dependent on every key of _R_.
+  - [Non-transitively dependent](#transitive-functional-dependency) on every key of _R_.
+- (Alternative) For all \\(\alpha \rightarrow \beta \ in\ F^+\\), at least one of the following holds:
+  - \\(\alpha \rightarrow \beta\\) is trivial.
+  - \\(\alpha\\) is a superkey of _R_
+  - Each attribute _A_ in \\(\beta - \alpha\\) is contained in a candidate key for _R_.
+
+Example:
+
+
+emp_id	| emp_name |	emp_zip |	emp_state |	emp_city |	emp_district
+---|---|---|---|---|---
+1001	|	John	|	282005	|	UP	|	Agra	|	Dayal Bagh
+1002	|	Ajeet	|	222008	|	TN	|	Chennai	|	M-City
+1006	|	Lora	|	282007	|	TN	|	Chennai	|	Urrapakkam
+1101	|	Lilly	|	292008	|	UK	|	Pauri	|	Bhagwan
+1201	|	Steve	|	222999	|	MP	|	Gwalior	|	Ratan
+
+Here, _{emp\id}_ is the candidate key; however, we have _emp\_zip \\(\rightarrow\\) emp\_state, emp\_city, and emp\_district_. Therefore, we need to split them into a new table.
+
+_employee table_:
+
+emp_id	|	emp_name	|	emp_zip
+---|---|---
+1001	|	John	|	282005
+1002	|	Ajeet	|	222008
+1006	|	Lora	|	282007
+1101	|	Lilly	|	292008
+1201	|	Steve	|	222999
+
+_employee\_zip table_:
+
+emp_zip	|	emp_state	|	emp_city	|	emp_district
+---|---|---|---
+282005	|	UP	|	Agra	|	Dayal Bagh
+222008	|	TN	|	Chennai	|	M-City
+282007	|	TN	|	Chennai	|	Urrapakkam
+292008	|	UK	|	Pauri	|	Bhagwan
+222999	|	MP	|	Gwalior	|	Ratan
+
+## BCNF
+
+For all functional dependencies in \\(F^+\\) where \\(\alpha \rightarrow \beta\\), at least one of the following holds:
+
+1. \\(\alpha \rightarrow \beta\\) is [trivial](#trivial-functional-dependency)
+2. \\(\alpha\\) is a **superkey** of \\(R$$
+
+For example,
+
+_in\_dep (ID, name, salary, dept\_name, building, budget)_ is not BCNF because _dept\_name → building, budget_ but _dept\_name_ is not a superkey \\(\Rightarrow\\) decomposites it into _instructor_ and _department_.
+
+### BCNF and Dependency Preservation
+
+It is not always possible to achieve both **BCNF** and [**dependency preservation**](#dependency-preservation).
+
+For example,
+
+_dept\_advisor(s\_ID, i\_ID, department\_name)_ where
+
+- _i\_ID → dept\_name_
+- _s\_ID, dept\_name → i\_ID_
+
+It is not **BCNF** but any decomposition will violate the **dependency preservation**.
+
+Recall an alternative definition for [**3NF**](#3nf):
+
+(Alternative) For all \\(\alpha \rightarrow \beta \ in\ F^+\\), at least one of the following holds:
+- \\(\alpha \rightarrow \beta\\) is trivial.
+- \\(\alpha\\) is a superkey of _R_
+- Each attribute _A_ in \\(\beta - \alpha\\) is **contained** in a **candidate key** for _R_.
+
+The third condition is a _relaxation_ of **BCNF** for dependency preservation.
+
+For the example
+
+_dept\_advisor(s\_ID, i\_ID, department\_name)_ where
+
+- _i\_ID → dept\_name_
+- _s\_ID, dept\_name → i\_ID_
+
+it is not in **BCNF**. However, it is in **3NF**.
+
+Functional dependencies:
+
+- _i\_ID → dept\_name_
+- _s\_ID, dept\_name → i\_ID_
+
+There are 2 candidate keys: _{(S\_ID, i\_ID), (s\_ID, department\_name)}_.
+
+- _s\_ID, dept\_name_ is a superkey.
+- _i\_ID_ is not a superkey, but _dept\_name_ - _i\_ID_ is _dept\_name_ and it is in the candidate key _(s\_ID, department\_name)_.
+
+The drawback of [**3NF**](#3nf) is that it may contains _repetition_ of information and it may contain _NULL_ values.
+
+## Conclusion
+
+- [1NF](#1nf): All attributes depend on the **key**; *Atomic* attributes.
+- [2NF](#2nf): All attributes depend on the **whole key**.
+- [3NF](#3nf): All attributes depend on **nothing but the key**.
+- (1NF, 2NF, 3NF consider only the *primary key*.)
+- [BCNF](#bcnf): Non-trivial \\(\alpha \rightarrow \beta \Rightarrow \alpha\\) is a **superkey**. 
+- (BCNF may violate the dependancy preservation.)
+
+## References:
+
+1. https://www.guru99.com/database-normalization.html
+2. https://beginnersbook.com/2015/05/normalization-in-dbms/
+3. https://en.wikipedia.org/wiki/ACID

@@ -1,7 +1,8 @@
-source 'https://rubygems.org'
+source 'https://mirrors.aliyun.com/rubygems/'
 
 gem 'rouge'
 gem 'jekyll'
 gem 'jekyll-paginate'
 gem 'jekyll-paginate-content'
 gem 'json'
+gem 'kramdown'
