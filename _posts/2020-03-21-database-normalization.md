@@ -374,7 +374,7 @@ $\alpha \rightarrow \rightarrow \beta$ holds on $R$ if in any legal relation $r(
 
 In this case, we also have $\alpha \rightarrow \rightarrow \gamma$.
 
-We can also adopt the similar definition to a set of attributes: $R = Y, Z, W$. We say $Y \rightarrow\rightarrow Z|W$ iff for all possible relations $r(R)$
+We can also adopt the similar definition to a set of attributes: $R = Y, Z, W$. We say $Y \rightarrow\rightarrow Z|W$ iff for all possible relations $r(R)$.
 
 $<y_1, z_1, w_1> \in r \And <y_1, z_2, w_2> \in r$
 
