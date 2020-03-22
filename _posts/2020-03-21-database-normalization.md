@@ -52,17 +52,17 @@ One of the goal for database design is **Atomic**. It means that elements are *i
 
 ## Lossless Decomposition
 
-To perform normalization, we will use _lossless_ decompositions. To decompose a relation schema  \\(R\\) into \\(R_1\\) and \\(R_2\\) means that \\(R = R_1 \cap R_2\\). A _lossless_ decomposition should satisfy \\(\Pi_{R_1}(r) \bowtie \Pi_{R_2}(r) = r\\).
+To perform normalization, we will use _lossless_ decompositions. To decompose a relation schema  $R$ into $R_1$ and $R_2$ means that $R = R_1 \cap R_2$. A _lossless_ decomposition should satisfy $\Pi_{R_1}(r) \bowtie \Pi_{R_2}(r) = r$.
 
 ## Functional Dependencies
 
-Represented by \\(\alpha \rightarrow \beta\\), where \\(\alpha \subseteq R, \beta \subseteq R\\).
+Represented by $\alpha \rightarrow \beta$, where $\alpha \subseteq R, \beta \subseteq R$.
 
 $$(\alpha \rightarrow \beta) \Leftrightarrow (t_1[\alpha] = t_2[\beta] \Rightarrow t_1[\beta] = t_2[\beta]\ \forall t_1, t_2)$$
 
 ### Closure of a Set of Functional Dependencies
 
-For a set \\(F\\) of functional dependencies, \\(A \rightarrow B\\) and \\(B \rightarrow C\\) \\(\Rightarrow A \rightarrow C\\). The set of **all** functional dependencies logically implied by \\(F\\) is the **closure** of \\(F\\), denoted by \\(F^+\\).
+For a set $F$ of functional dependencies, $A \rightarrow B$ and $B \rightarrow C$ $\Rightarrow A \rightarrow C$. The set of **all** functional dependencies logically implied by $F$ is the **closure** of $F$, denoted by $F^+$.
 
 ### Trivial Functional Dependency
 
@@ -70,20 +70,20 @@ $$\beta \subset \alpha \Rightarrow \alpha \rightarrow \beta$$
 
 ### Transitive Functional Dependency
 
-\\(X \rightarrow Z\\) can be derived from 2 FDs \\(X \rightarrow Y\\) and \\(Y \rightarrow Z\\), where \\(Y\\) is a nonprime attribute.
+$X \rightarrow Z$ can be derived from 2 FDs $X \rightarrow Y$ and $Y \rightarrow Z$, where $Y$ is a nonprime attribute.
 
-For example, _Ssn \\(\rightarrow\\) Dmgr_ssn_ can be derived by _Ssn \\(\rightarrow\\) Dnumber_ and _Dnumber \\(\rightarrow\\) Dmgr_ssn_.
+For example, _Ssn $\rightarrow$ Dmgr_ssn_ can be derived by _Ssn $\rightarrow$ Dnumber_ and _Dnumber $\rightarrow$ Dmgr_ssn_.
 
 ### Full Functional Dependency
 
-A FD \\(Y \rightarrow Z\\) where removal of **any** attribute from \\(Y \Rightarrow Y \nrightarrow Z\\). 
+A FD $Y \rightarrow Z$ where removal of **any** attribute from $Y \Rightarrow Y \nrightarrow Z$. 
 
 ### Test of Lossless Decomposition
 
-\\(\Pi_{R_1}(r) \bowtie \Pi_{R_2}(r) = r\\) is _lossless_ if **one** of the following holds (**sufficient**):
+$\Pi_{R_1}(r) \bowtie \Pi_{R_2}(r) = r$ is _lossless_ if **one** of the following holds (**sufficient**):
 
-- \\(R_1 \cap R_2 \rightarrow R_1\\)
-- \\(R_1 \cap R_2 \rightarrow R_2\\)
+- $R_1 \cap R_2 \rightarrow R_1$
+- $R_1 \cap R_2 \rightarrow R_2$
 
 ### Dependency Preservation
 
@@ -103,14 +103,14 @@ Since [1NF](#1nf), [2NF](#2nf) and [3NF](#3nf) consider only non-prime attribute
 
 ### Candidate Key
 
-\\(K\\) is a candidate key for if and only if it is the minimal subset of attributes to determine \\(R\\), that is \\(\Leftrightarrow\\)
+$K$ is a candidate key for if and only if it is the minimal subset of attributes to determine $R$, that is $\Leftrightarrow$
 
-- \\(K \rightarrow R\\)
-- no \\(\alpha \subset K, \alpha \rightarrow R\\)
+- $K \rightarrow R$
+- no $\alpha \subset K, \alpha \rightarrow R$
 
 ### Primary Key
 
-One of the **Candidate Key** of \\(R\\) is chosen as the primary key.
+One of the **Candidate Key** of $R$ is chosen as the primary key.
 
 ### Secondary Key
 
@@ -158,14 +158,14 @@ ID | Telephone
 ## 2NF
 
 - [1NF](#1nf)
-- Every [nonprime attribtues](#non-prime-attribute) \\(A\\) in \\(R\\) is [fully functionally dependent](#full-functional-dependency) on the [primary key](#primary-key).
-- (General) Every [nonprime attribtues](#non-prime-attribute) \\(A\\) in \\(R\\) is [fully functionally dependent](#full-functional-dependency) on every [candidate key](#candidate-key).
+- Every [nonprime attribtues](#non-prime-attribute) $A$ in $R$ is [fully functionally dependent](#full-functional-dependency) on the [primary key](#primary-key).
+- (General) Every [nonprime attribtues](#non-prime-attribute) $A$ in $R$ is [fully functionally dependent](#full-functional-dependency) on every [candidate key](#candidate-key).
 
 Example:
 
 _EMP\_PROJ(Emp#, Proj#, Ename, Pname, No\_hours)_
 
-_(Emp#, Proj#)_ is the candidate key, but _Proj#_ \\(\rightarrow\\) _Pname_ and _No\_hours_. 
+_(Emp#, Proj#)_ is the candidate key, but _Proj#_ $\rightarrow$ _Pname_ and _No\_hours_. 
 
 $$\Rightarrow$$
 
@@ -177,16 +177,16 @@ $$\Rightarrow$$
 
 - [2NF](#2nf)
 - No [nonprime attribute](#non-prime-attribute) _A_ in _R_ is [transitively dependent](#transitive-functional-dependency) on the [primary key](#primary-key).
-- (Generally) When a nontrival functional dependency \\(X \rightarrow A\\) holds in _R_, then either
+- (Generally) When a nontrival functional dependency $X \rightarrow A$ holds in _R_, then either
   - _X_ is a super key of _R_
   - or _A - X_ is a prime attribute of _R_
 - (Alternative) Every nonprime attribute in _R_ meets both conditions:
   - Fully conditional functionally dependent on every key of _R_.
   - [Non-transitively dependent](#transitive-functional-dependency) on every key of _R_.
-- (Alternative) For all \\(\alpha \rightarrow \beta \ in\ F^+\\), at least one of the following holds:
-  - \\(\alpha \rightarrow \beta\\) is trivial.
-  - \\(\alpha\\) is a superkey of _R_
-  - Each attribute _A_ in \\(\beta - \alpha\\) is contained in a candidate key for _R_.
+- (Alternative) For all $\alpha \rightarrow \beta \ in\ F^+$, at least one of the following holds:
+  - $\alpha \rightarrow \beta$ is trivial.
+  - $\alpha$ is a superkey of _R_
+  - Each attribute _A_ in $\beta - \alpha$ is contained in a candidate key for _R_.
 
 Example:
 
@@ -199,7 +199,7 @@ emp_id	| emp_name |	emp_zip |	emp_state |	emp_city |	emp_district
 1101	|	Lilly	|	292008	|	UK	|	Pauri	|	Bhagwan
 1201	|	Steve	|	222999	|	MP	|	Gwalior	|	Ratan
 
-Here, _{emp\id}_ is the candidate key; however, we have _emp\_zip \\(\rightarrow\\) emp\_state, emp\_city, and emp\_district_. Therefore, we need to split them into a new table.
+Here, _{emp\id}_ is the candidate key; however, we have _emp\_zip $\rightarrow$ emp\_state, emp\_city, and emp\_district_. Therefore, we need to split them into a new table.
 
 _employee table_:
 
@@ -223,14 +223,14 @@ emp_zip	|	emp_state	|	emp_city	|	emp_district
 
 ## BCNF
 
-For all functional dependencies in \\(F^+\\) where \\(\alpha \rightarrow \beta\\), at least one of the following holds:
+For all functional dependencies in $F^+$ where $\alpha \rightarrow \beta$, at least one of the following holds:
 
-1. \\(\alpha \rightarrow \beta\\) is [trivial](#trivial-functional-dependency)
-2. \\(\alpha\\) is a **superkey** of \\(R$$
+1. $\alpha \rightarrow \beta$ is [trivial](#trivial-functional-dependency)
+2. $\alpha$ is a **superkey** of $R$$
 
 For example,
 
-_in\_dep (ID, name, salary, dept\_name, building, budget)_ is not BCNF because _dept\_name → building, budget_ but _dept\_name_ is not a superkey \\(\Rightarrow\\) decomposites it into _instructor_ and _department_.
+_in\_dep (ID, name, salary, dept\_name, building, budget)_ is not BCNF because _dept\_name → building, budget_ but _dept\_name_ is not a superkey $\Rightarrow$ decomposites it into _instructor_ and _department_.
 
 ### BCNF and Dependency Preservation
 
@@ -247,10 +247,10 @@ It is not **BCNF** but any decomposition will violate the **dependency preservat
 
 Recall an alternative definition for [**3NF**](#3nf):
 
-(Alternative) For all \\(\alpha \rightarrow \beta \ in\ F^+\\), at least one of the following holds:
-- \\(\alpha \rightarrow \beta\\) is trivial.
-- \\(\alpha\\) is a superkey of _R_
-- Each attribute _A_ in \\(\beta - \alpha\\) is **contained** in a **candidate key** for _R_.
+(Alternative) For all $\alpha \rightarrow \beta \ in\ F^+$, at least one of the following holds:
+- $\alpha \rightarrow \beta$ is trivial.
+- $\alpha$ is a superkey of _R_
+- Each attribute _A_ in $\beta - \alpha$ is **contained** in a **candidate key** for _R_.
 
 The third condition is a _relaxation_ of **BCNF** for dependency preservation.
 
@@ -281,7 +281,7 @@ The drawback of [**3NF**](#3nf) is that it may contains _repetition_ of informat
 - [2NF](#2nf): All attributes depend on the **whole key**.
 - [3NF](#3nf): All attributes depend on **nothing but the key**.
 - (1NF, 2NF, 3NF consider only the *primary key*.)
-- [BCNF](#bcnf): Non-trivial \\(\alpha \rightarrow \beta \Rightarrow \alpha\\) is a **superkey**. 
+- [BCNF](#bcnf): Non-trivial $\alpha \rightarrow \beta \Rightarrow \alpha$ is a **superkey**. 
 - (BCNF may violate the dependancy preservation.)
 
 ## References:
