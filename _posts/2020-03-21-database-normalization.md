@@ -17,7 +17,7 @@ paginate: false
 math: true
 ---
 
-In this article, we are going to review the database normalization methods and compare different methods. The corresponding chapters in the textbook is from Chapter 5 to Chapter   .
+In this article, we are going to review the database normalization methods and compare different methods. The corresponding chapters in the textbook is from Chapter 5 to Chapter 7 .
 
 Content of Table:
 
@@ -30,15 +30,18 @@ Content of Table:
   - [Full Functional Dependency](#full-functional-dependency)
   - [Test of Lossless Decomposition](#test-of-lossless-decomposition)
   - [Dependency Preservation](#dependency-preservation)
+  - [Canonical Cover](#canonical-cover)
 - [Keys](#keys)
   - [Candidate Key](#candidate-key)
   - [Primary Key](#primary-key)
   - [Secondary Key](#secondary-key)
   - [Prime Attribute](#prime-attribute)
   - [Non-prime Attribute](#non-prime-attribute)
+  - [Extraneous Attribute](#extraneous-attribute)
 - [1NF](#1nf)
 - [2NF](#2nf)
 - [3NF](#3nf)
+  - [Algorithm for 3NF Decomposition](#algorithm-for-3nf-decomposition)
 - [BCNF](#bcnf)
   - [BCNF and Dependency Preservation](#bcnf-and-dependency-preservation)
 - [Conclusion](#conclusion)
@@ -63,6 +66,15 @@ $$(\alpha \rightarrow \beta) \Leftrightarrow (t_1[\alpha] = t_2[\beta] \Rightarr
 ### Closure of a Set of Functional Dependencies
 
 For a set $F$ of functional dependencies, $A \rightarrow B$ and $B \rightarrow C$ $\Rightarrow A \rightarrow C$. The set of **all** functional dependencies logically implied by $F$ is the **closure** of $F$, denoted by $F^+$.
+
+To compute $F^+$ we repeatedly apply _Armstrong's Axioms_:
+
+1. **Reflexive Rule**: $\beta \subset \alpha \Rightarrow \alpha \rightarrow \beta$.
+2. **Augmentation Rule**: $\alpha \rightarrow \beta \Rightarrow \gamma\alpha \rightarrow \gamma\beta$.
+3. **Transitivity Rule**: $\alpha \rightarrow \beta \And \beta \rightarrow \gamma \Rightarrow \alpha \rightarrow \gamma$.
+4. **Union Rule**: $\alpha \rightarrow \beta \And \alpha \rightarrow \gamma \Rightarrow \alpha \rightarrow \beta\gamma$.
+5. **Decomposition Rule**: $\alpha \rightarrow \beta\gamma \Rightarrow \alpha \rightarrow \beta \And \alpha \rightarrow \gamma$.
+6. **Pseudotransitivity Rule**: $\alpha \rightarrow \beta \And \gamma \beta \rightarrow \delta \Rightarrow \alpha \gamma \rightarrow \delta$
 
 ### Trivial Functional Dependency
 
@@ -98,6 +110,29 @@ _dept\_advisor(s\_ID, i\_ID, department\_name)_ where
 
 Since [1NF](#1nf), [2NF](#2nf) and [3NF](#3nf) consider only non-prime attributes, the above schema does not violate them. However, _i\_ID → dept\_name_ introduces a repetition for storing the _dept\_name_. If we decompose it into two schemas, we will not include _s\_ID, i\_ID, department\_name_ in the same s chema anymore, which is not __dependency preserving__.
 
+Formally, let $F_i$ be the set of dependencies $F^+$ that include only attributes in $R_i$, then $(F_1 \cup F_2 \cup ... \cup F_n)^+ = F^+$. To test if $\alpha \rightarrow \beta$ is preserved:
+
+- _result_ = $\alpha$
+- repeat
+  - for each $R_i$ in the decomposition
+    - t = (_result_ $\cap R_i$ ) $^+ \cap R_i$
+    - _result_ = _result_ $\cup$ t
+  - until (_result_ not change)
+- Check if _result_ contains all attributes in $\beta$
+
+
+### Canonical Cover
+
+A **Canonical cover** for $F$ is a set of dependencies $F_c$ such that,
+
+1. $F \implies F_c$
+2. $F_c \implies F$
+3. No functional dependency in $F_c$ contains an [**extraneous attribute**](#extraneous-attribute).
+4. Each left side of functional dependency in $F_c$ is unique, i.e. no 2 dependencies in $F_c$:
+   1. $\alpha_1 \rightarrow \beta_1 \And \alpha_2 \rightarrow \beta_2$
+   2. $\alpha_1 = \alpha_2$
+
+To compute a **canonical cover** for $F$, we repeatedly remove an extraneous attribute from $F_c$ until $F_c$ not change.
 
 ## Keys
 
@@ -124,6 +159,28 @@ A member of some **candidate keys**.
 
 Not a member of any **candidate keys**.
 
+### Extraneous Attribute
+
+An attribute of a [functional dependency](#functional-dependencies) in $F$ is **extraneous** if we can remove it without changing [$F^+$](#closure-of-a-set-of-functional-dependencies).
+
+Consider $\alpha \rightarrow \beta$ in $F$,
+  
+- **Remove from the left**:
+  1. $A \in \alpha$
+  2. $F = (F - \{\alpha \rightarrow \beta\}) \cap ( \{ (\alpha - A) \rightarrow \beta \})$, i.e. removing $A$ does not change $F$.
+- **Remove from the right**:
+  1. $A \in \beta$
+  2. $F = (F - \{\alpha \rightarrow \beta\}) \cap ( \{ \alpha \rightarrow (\beta - A) \})$, i.e. removing $A$ does not change $F$.
+
+Example: 
+
+$F = \{AB \rightarrow CD, A\rightarrow E, E \rightarrow C\}$, we want to check $C$:
+
+1. Compute $(AB)^+$ under $F' = \{AB \rightarrow D, A \rightarrow E, E \rightarrow C\}$.
+2. $(AB)^+ = ABCDE$ which includes $CD$.
+3. This implies $C$ is **extraneous**.
+
+**Extraneous attribute** is useful for [**Canonical Cover**](#canonical-cover).
 
 ## 1NF
 
@@ -199,7 +256,7 @@ emp_id	| emp_name |	emp_zip |	emp_state |	emp_city |	emp_district
 1101	|	Lilly	|	292008	|	UK	|	Pauri	|	Bhagwan
 1201	|	Steve	|	222999	|	MP	|	Gwalior	|	Ratan
 
-Here, _{emp\id}_ is the candidate key; however, we have _emp\_zip $\rightarrow$ emp\_state, emp\_city, and emp\_district_. Therefore, we need to split them into a new table.
+Here, _{emp\_id}_ is the candidate key; however, we have _emp\_zip $\rightarrow$ emp\_state, emp\_city, and emp\_district_. Therefore, we need to split them into a new table.
 
 _employee table_:
 
@@ -221,16 +278,41 @@ emp_zip	|	emp_state	|	emp_city	|	emp_district
 292008	|	UK	|	Pauri	|	Bhagwan
 222999	|	MP	|	Gwalior	|	Ratan
 
+### Algorithm for 3NF Decomposition
+
+1. Compute $F_c$: the [**canonical cover**](#canonical-cover) for $F$
+2. i = 0
+3. for each FD $\alpha \rightarrow \beta$ in $F_c$ do
+   1. if none $R_j, 1 \le j \le i$ contains $\alpha \beta$, then **Create a new relation $R_i$**
+      1. i = i + 1
+      2. $R_i = \alpha \beta$
+4. if none of the schemas $R_j, 1 \le j \le i$ contains a candidate key for $R$, then
+   1. i = i + 1
+   2. $R_i$ = all candidate key for $R$.
+5. Remove redundant relations:
+6. repeat
+   1. if any schema $R_j$ is contained in another schema $R_k$
+      1. $R_j = R_i$
+      2. i = i - 1
+7. until no more $R_j$ can be deleted
+8. return $(R_1, R_2, ..., R_i)$
+
 ## BCNF
 
 For all functional dependencies in $F^+$ where $\alpha \rightarrow \beta$, at least one of the following holds:
 
 1. $\alpha \rightarrow \beta$ is [trivial](#trivial-functional-dependency)
-2. $\alpha$ is a **superkey** of $R$$
+2. $\alpha$ is a **superkey** of $R$
+
+A **simplified** test for **BCNF** is to check only the dependencies in $F$ if it causes a violation, that is 
+
+Compute $\alpha^+$ and verify that it includes all attributes of $R$.
 
 For example,
 
 _in\_dep (ID, name, salary, dept\_name, building, budget)_ is not BCNF because _dept\_name → building, budget_ but _dept\_name_ is not a superkey $\Rightarrow$ decomposites it into _instructor_ and _department_.
+
+However, **simplified** test using only $F$ may mislead a non-BCNF as a BCNF where $\alpha$ is not in the same relation $R$. Therefore, we may need $F^+$ to prove **BCNF**.
 
 ### BCNF and Dependency Preservation
 
