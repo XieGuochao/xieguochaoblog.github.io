@@ -393,7 +393,7 @@ For example, we have a relation _<ID, child\_name, phone\_number>_, and one _ID_
 The **restriction** of $D$ to $R_i$ is the set $D_i$ consisting of
 
 - All FD in $D^+$ that include only attributes of $R_i$
-- All MVD of the form $\alpha \rightarrow\rightarrow (\beta \cap R_i)$ where $\alpha \subset \R_i \And \alpha \rightarrow\rightarrow \beta$ is in $D^+$.
+- All MVD of the form $\alpha \rightarrow\rightarrow (\beta \cap R_i)$ where $\alpha \subseteq R_i \ \And \ \alpha \rightarrow \rightarrow \beta$ is in $D^+$.
 
 ### Trivial MVD
 
