@@ -44,6 +44,11 @@ Content of Table:
   - [Algorithm for 3NF Decomposition](#algorithm-for-3nf-decomposition)
 - [BCNF](#bcnf)
   - [BCNF and Dependency Preservation](#bcnf-and-dependency-preservation)
+- [Multivalued Dependency](#multivalued-dependency)
+  - [Restriction of Multivalued Dependencies](#restriction-of-multivalued-dependencies)
+  - [Trivial MVD](#trivial-mvd)
+- [4NF](#4nf)
+- [Temporal Data](#temporal-data)
 - [Conclusion](#conclusion)
 - [References:](#references)
 
@@ -357,6 +362,61 @@ There are 2 candidate keys: _{(S\_ID, i\_ID), (s\_ID, department\_name)}_.
 
 The drawback of [**3NF**](#3nf) is that it may contains _repetition_ of information and it may contain _NULL_ values.
 
+## Multivalued Dependency
+
+**Multivalued Dependency** (MVD) is used to **represent** the independence of attributes.
+
+$\alpha \rightarrow \rightarrow \beta$ holds on $R$ if in any legal relation $r(R)$, we have the constraint: if 2 tuples $t_1$ and $t_2$ exist in $r$ such that $t_1[\alpha] = t_2[\alpha]$, then there exist tuples $t_3$ and $t_4$ in $r$ such that:
+
+- $t_1[\alpha] = t_2[\alpha] = t_3[\alpha] = t_4[\alpha]$
+- $t_1[\beta] = t_3[\beta] \And t_2[\beta] = t_4[\beta]$
+- $t_1[\gamma] = t_4[\gamma] \And t_2[\gamma] = t_3[\gamma]$
+
+In this case, we also have $\alpha \rightarrow \rightarrow \gamma$.
+
+We can also adopt the similar definition to a set of attributes: $R = Y, Z, W$. We say $Y \rightarrow\rightarrow Z|W$ iff for all possible relations $r(R)$
+
+$<y_1, z_1, w_1> \in r \And <y_1, z_2, w_2> \in r$
+
+$\Rightarrow\ <y_1, z_1, w_2> \in r \And <y_1, z_2, w_1> \in r$
+
+Note: If $Y \rightarrow Z \Rightarrow Y \rightarrow\rightarrow Z$.
+
+For example, we have a relation _<ID, child\_name, phone\_number>_, and one _ID_ can have multiple _child\_name_ and multiple _phone\_number_, then we will have 
+
+- _ID_ $\rightarrow\rightarrow$ _child\_name_
+- _ID_ $\rightarrow\rightarrow$ _phone\_number_
+
+
+### Restriction of Multivalued Dependencies
+
+The **restriction** of $D$ to $R_i$ is the set $D_i$ consisting of
+
+- All FD in $D^+$ that include only attributes of $R_i$
+- All MVD of the form $\alpha \rightarrow\rightarrow (\beta \cap R_i)$ where $\alpha \subset \R_i \And \alpha \rightarrow\rightarrow \beta$ is in $D^+$.
+
+### Trivial MVD
+
+- $\beta \subseteq \alpha$ or
+- $\alpha \cup \beta = R$.
+
+## 4NF
+
+$R$ is in **4NF** w.r.t. a set $D$ of functional and multivalued dependencies if 
+
+for all **nontrivial** multivalued dependencies in $D^+$ of the form $\alpha \rightarrow\rightarrow \beta$, where $\alpha \subseteq R \And \beta \subseteq R$, $\alpha$ is a **supeykey**.
+
+For the case of a relation _<ID, child\_name, phone\_number>_, and one _ID_ can have multiple _child\_name_ and multiple _phone\_number_, we will have 
+
+- _ID_ $\rightarrow\rightarrow$ _child\_name_
+- _ID_ $\rightarrow\rightarrow$ _phone\_number_
+
+We will need to decomposite it into 2 relations _<ID, child\_name>_ and _<ID, phone\_number>_ in order to satisfy the **4NF**.
+
+## Temporal Data
+
+**Temporal Data** have an association time interval. A **snapshot** is the value of the data at a particular point in time. A **temporal functional dependency** $X\rightarrow Y$ holds on $R$ if $X\rightarrow Y$ holds on all **snapshots** for all legal instances $r(R)$.
+
 ## Conclusion
 
 - [1NF](#1nf): All attributes depend on the **key**; *Atomic* attributes.
@@ -365,6 +425,7 @@ The drawback of [**3NF**](#3nf) is that it may contains _repetition_ of informat
 - (1NF, 2NF, 3NF consider only the *primary key*.)
 - [BCNF](#bcnf): Non-trivial $\alpha \rightarrow \beta \Rightarrow \alpha$ is a **superkey**. 
 - (BCNF may violate the dependancy preservation.)
+- [4NF](#4nf): Consider [multivalued dependency](#multivalued-dependency); try to divide relations with independent attributes.
 
 ## References:
 
