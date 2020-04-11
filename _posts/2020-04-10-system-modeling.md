@@ -4,7 +4,7 @@ layout: post
 title: "System Modeling"
 subtitle:
 description: Corresponding to CSC4001 Chapter 6 System Modeling
-image:
+image: /assets/img/background/_3128_x_1760__beautiful_golden_colorado_in_169_-_imgur.jpg
 optimized_image:
 category: course
 tags:
