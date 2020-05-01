@@ -14,7 +14,7 @@ author: Guochao Xie
 paginate: false
 ---
 
-**The PPT version is available here:** [PPT]
+**The PPT version is available here:** [PPT](/assets/files/CSE2020.pptx)
 
 # Self Introduction
 
