@@ -38,7 +38,7 @@ Interest-Oriented or Interested-Oriented?
 
 ## Interest-Oriented?
 
-### Playing games? Or build games?
+### Playing games? Or building games?
 
 [](/assets/img/contents/snake.jpg)
 
@@ -101,7 +101,7 @@ You may refer to our outstanding graduates: Xiaoxing Ye & Yifan Lan.
 - Year 3:
   - 1st Term:
     - Data Structures: CSC3100
-    - Operating Systems: CSC3050
+    - Operating Systems: CSC3150
   - 2nd Term:
     - Database: CSC3170
     - Software Engineering: CSC4001
@@ -157,7 +157,7 @@ Running VSCode on website:
 
 # Conclusion
 
-**Choose CSE, and be a cool guy!**
+**Choose CSE and be a cool guy!**
 
 # Advertisement
 
