@@ -6,9 +6,9 @@ subtitle:
 description: CSE Major Sharing for CUHK(SZ) in 2020.
 image: /assets/img/background/Computer-Science-Engineering.jpeg
 optimized_image: /assets/img/background/Computer-Science-Engineering.jpeg
-category: expression
+category: original
 tags:
-    - expression
+    - original
     - CSE
 author: Guochao Xie
 paginate: false
