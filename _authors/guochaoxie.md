@@ -1,6 +1,6 @@
 ---
 layout: author
-photo: /assets/img/uploads/profile.jpg
+photo: /assets/img/uploads/头像.jpg
 name: Guochao Xie
 display_name: Guochao Xie 谢国超
 position: Chief Editor
